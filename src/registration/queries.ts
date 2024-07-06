@@ -11,7 +11,7 @@ WHERE
   `;
 };
 
-export const getOrgQuery = (id: string) => {
+export const getOrgQuery = (id: string, userid: string) => {
   return `
   SELECT 
   orgid,
@@ -20,7 +20,8 @@ export const getOrgQuery = (id: string) => {
 FROM 
   organisation 
 WHERE 
-  ${id} = orgid;
+  ${id} = orgid
+  AND ${userid} = ANY (users);
   `;
 };
 

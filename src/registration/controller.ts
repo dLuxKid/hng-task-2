@@ -40,8 +40,9 @@ export const getYourOrganisations = async (req: Request, res: Response) => {
 
 export const getOrganisation = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { userid } = req.user;
 
-  const query = getOrgQuery(id);
+  const query = getOrgQuery(id, userid);
 
   try {
     const result = await client.query(query);
@@ -49,7 +50,7 @@ export const getOrganisation = async (req: Request, res: Response) => {
     if (result.rows.length === 0)
       res.status(401).json({
         status: "Bad request",
-        message: "Such organisation does not exist",
+        message: "You do not belong to such orgainisation",
         statusCode: 401,
       });
 
