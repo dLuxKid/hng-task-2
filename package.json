@@ -1,13 +1,13 @@
 {
   "name": "task-2",
-  "module": "server.ts",
+  "module": "index.ts",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
     "@types/jest": "^29.5.12"
   },
   "scripts": {
-    "start": "bun --watch run server.ts",
+    "start": "bun --watch run index.ts",
     "test": "jest"
   },
   "peerDependencies": {
