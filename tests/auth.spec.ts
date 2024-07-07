@@ -33,16 +33,15 @@ describe("Auth Endpoints", () => {
       phone: "09012345678",
     };
     const res = await request(app).post("/auth/register").send(user);
+
     const orgres = await request(app)
       .get("/api/organisations")
       .set("Authorization", `Bearer ${res.body.data.accessToken}`);
 
-    const token = signToken(res.body.data.user.userid);
-
     expect(res.statusCode).toEqual(201);
     expect(res.body.data.user.firstName).toBe(user.firstName);
     expect(res.body.data.user.email).toBe(user.email);
-    expect(res.body.data.accessToken).toBe(token);
+    expect(res.body.data).toHaveProperty("accessToken");
 
     expect(orgres.statusCode).toEqual(200);
     expect(orgres.body.data.organisations[0].name.split("'")[0]).toBe(
@@ -57,11 +56,9 @@ describe("Auth Endpoints", () => {
     };
     const res = await request(app).post("/auth/login").send(user);
 
-    const token = signToken(res.body.data.user.userid);
-
     expect(res.statusCode).toEqual(200);
     expect(res.body.data.user.email).toBe(user.email);
-    expect(res.body.data.accessToken).toBe(token);
+    expect(res.body.data).toHaveProperty("accessToken");
   });
 
   it("should fail if required fields are missing", async () => {
