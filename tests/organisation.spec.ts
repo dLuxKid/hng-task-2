@@ -20,6 +20,26 @@
 //   });
 // });
 
+// import httpMocks from "node-mocks-http"
+
+// describe("Organisation Access", () => {
+//   it("Should return the organisation if the user is the owner", async () => {
+
+//     const req = httpMocks.createRequest({
+//       method: "GET",
+//       url: "/organisations/1",
+//       params: {
+//         orgid: 1,
+//       },
+//       user: user,
+//     });
+//     const res = httpMocks.createResponse();
+//     await getOrganisation(req, res);
+//     expect(res.statusCode).toBe(200);
+//     expect(res._getData()).toBe(JSON.stringify(organisation));
+//   });
+// });
+
 describe("testing test file", () => {
   it("testing test file", () => {
     expect(true).toBeTruthy();
