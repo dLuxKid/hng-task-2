@@ -70,7 +70,7 @@ export const createUser = async (req: Request, res: Response) => {
     if (error.code == "23505") {
       const detail = error.detail;
       const field = detail.slice(detail.indexOf("(") + 1, detail.indexOf(")"));
-      res.status(422).json({
+      return res.status(422).json({
         errors: [
           {
             field,
@@ -78,14 +78,13 @@ export const createUser = async (req: Request, res: Response) => {
           },
         ],
       });
-    } else {
-      res.status(400).json({
-        status: "Bad Request",
-        message: "Registration unsuccessful",
-        statusCode: 400,
-        error,
-      });
     }
+    return res.status(400).json({
+      status: "Bad Request",
+      message: "Registration unsuccessful",
+      statusCode: 400,
+      error,
+    });
   }
 };
 
@@ -119,7 +118,7 @@ export const loginUser = async (req: Request, res: Response) => {
       result.rows.length === 0 ||
       !(await bcrypt.compare(password, result.rows[0].password))
     )
-      res.status(400).json({
+      return res.status(400).json({
         status: "Bad Request",
         message: "Invalid Email or Password",
         statusCode: 401,
@@ -136,7 +135,7 @@ export const loginUser = async (req: Request, res: Response) => {
   } catch (err: any) {
     console.error("Error logging in", err);
 
-    res.status(400).json({
+    return res.status(400).json({
       status: "Bad Request",
       message: "Authentication failed",
       statusCode: 401,

@@ -16,13 +16,13 @@ export const getYourOrganisations = async (req: Request, res: Response) => {
     const result = await client.query(query);
 
     if (result.rows.length === 0)
-      res.status(401).json({
+      return res.status(401).json({
         status: "Bad request",
         message: "You do not belong to an organisation",
         statusCode: 401,
       });
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Successfully fetched your organisations",
       data: {
@@ -30,7 +30,7 @@ export const getYourOrganisations = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    res.status(404).json({
+    return res.status(404).json({
       status: "Bad request",
       message: "Error fetching your orgainsation",
       statusCode: 404,
@@ -47,20 +47,21 @@ export const getOrganisation = async (req: Request, res: Response) => {
   try {
     const result = await client.query(query);
 
-    if (result.rows.length === 0)
-      res.status(401).json({
+    if (result.rows.length === 0) {
+      return res.status(404).json({
         status: "Bad request",
-        message: "You do not belong to such orgainisation",
+        message: "You do not belong to such organisation",
         statusCode: 401,
       });
+    }
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Successfully fetched the organisation",
       data: result.rows[0],
     });
   } catch (error) {
-    res.status(404).json({
+    return res.status(404).json({
       status: "Bad request",
       message: "Error fetching the orgainsation",
       statusCode: 404,
@@ -91,13 +92,13 @@ export const createOrg = async (req: Request, res: Response) => {
     const result = await client.query(query);
 
     if (result.rows.length === 0)
-      res.status(400).json({
+      return res.status(400).json({
         status: "Bad Request",
         message: "Client error",
         statusCode: 400,
       });
 
-    res.status(201).json({
+    return res.status(201).json({
       status: "success",
       message: "Organisation created successfully",
       data: result.rows[0],

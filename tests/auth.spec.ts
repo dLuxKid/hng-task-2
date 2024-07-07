@@ -98,3 +98,36 @@ describe("Auth Endpoints", () => {
     );
   });
 });
+
+describe("Organisation Tests", () => {
+  let authToken: string;
+
+  it("Should login", async () => {
+    const res = await request(app).post("/auth/login").send({
+      email: "john.doe@example.com",
+      password: "password123",
+    });
+
+    authToken = res.body.data.accessToken;
+  });
+
+  it("should get organisations user belongs to", async () => {
+    const res = await request(app)
+      .get("/api/organisations")
+      .set("Authorization", `Bearer ${authToken}`);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.data).toHaveProperty("organisations");
+  });
+
+  it("should fail if user gets organisation it does not belong to", async () => {
+    const res = await request(app)
+      .get("/api/organisations/1000")
+      .set("Authorization", `Bearer ${authToken}`);
+
+    console.log(res.body);
+
+    expect(res.statusCode).toEqual(404);
+    expect(res.body.message).toBe("You do not belong to such organisation");
+  });
+});

@@ -5,13 +5,13 @@ export const getMyAccount = (req: Request, res: Response) => {
   const { id } = req.params;
 
   if (userid != id)
-    res.status(400).json({
+    return res.status(400).json({
       status: "Bad Request",
       message: "Authentication failed",
       statusCode: 401,
     });
 
-  res.status(200).json({
+  return res.status(200).json({
     status: "success",
     message: "Your profile details",
     data: {
