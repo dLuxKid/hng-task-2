@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { type NextFunction, type Request, type Response } from "express";
 import jwt from "jsonwebtoken";
 import client from "../../db";
+import { createSendToken } from "../lib/utils";
 import { createUserQuery, loginQuery } from "./queries";
 
 declare global {
@@ -11,50 +12,6 @@ declare global {
     }
   }
 }
-
-const signToken = (user: {
-  userid: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-}) => {
-  return jwt.sign(
-    { ...user, userid: String(user.userid) },
-    process.env.JWT_SECRET as string,
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    }
-  );
-};
-
-const createSendToken = (
-  user: {
-    userid: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone?: string;
-  },
-  statusCode: number,
-  res: Response,
-  type: "signup" | "login"
-) => {
-  const token = signToken(user);
-
-  res.cookie("jwt", token, {
-    expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-  });
-
-  res.status(statusCode).json({
-    status: "success",
-    message: type === "login" ? "Login successful" : "Registration successful",
-    data: {
-      accessToken: token,
-      user,
-    },
-  });
-};
 
 export const createUser = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password, phone } = req.body;
@@ -109,9 +66,9 @@ export const createUser = async (req: Request, res: Response) => {
       res,
       "signup"
     );
-  } catch (err: any) {
-    if (err.stack.startsWith("Error: duplicate key value")) {
-      const detail = err.detail;
+  } catch (error: any) {
+    if (error.code == "23505") {
+      const detail = error.detail;
       const field = detail.slice(detail.indexOf("(") + 1, detail.indexOf(")"));
       res.status(422).json({
         errors: [
@@ -121,13 +78,14 @@ export const createUser = async (req: Request, res: Response) => {
           },
         ],
       });
+    } else {
+      res.status(400).json({
+        status: "Bad Request",
+        message: "Registration unsuccessful",
+        statusCode: 400,
+        error,
+      });
     }
-    res.status(400).json({
-      status: "Bad Request",
-      message: "Registration unsuccessful",
-      statusCode: 400,
-      err,
-    });
   }
 };
 

@@ -38,3 +38,5 @@ app.use("*", (req, res) => {
     statusCode: 404,
   });
 });
+
+export default app;
