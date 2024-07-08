@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
   res.status(200).json({ message: "hello" });
 });
 
-app.use("api/auth", authRouter);
+app.use("/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/organisations", organisationRouter);
 
