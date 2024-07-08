@@ -4,7 +4,7 @@ This is the backend implementation for user authentication and organization mana
 
 ## Backend URL
 
-[Backend URL](https://hng-task-2-o57r.onrender.com/)
+[Backend URL](https://hng-task-2-production-cb36.up.railway.app/)
 
 ## Features
 
@@ -255,10 +255,6 @@ Adds a user to a particular organization. [PROTECTED]
   "message": "User added to organisation successfully"
 }
 ```
-
-## Note
-
-The cron job is enabled, so you don't need to worry about downtime when testing the api url.
 
 ## Conclusion
 

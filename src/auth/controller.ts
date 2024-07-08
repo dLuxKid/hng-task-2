@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { type NextFunction, type Request, type Response } from "express";
 import jwt from "jsonwebtoken";
 import client from "../../db";
