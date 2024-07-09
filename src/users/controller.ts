@@ -11,7 +11,7 @@ export const getMyAccount = (req: Request, res: Response) => {
       statusCode: 401,
     });
 
-  return res.status(200).json({
+  res.status(200).json({
     status: "success",
     message: "Your profile details",
     data: {

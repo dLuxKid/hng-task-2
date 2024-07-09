@@ -79,7 +79,7 @@ export const createUser = async (req: Request, res: Response) => {
         ],
       });
     }
-    return res.status(400).json({
+    res.status(400).json({
       status: "Bad Request",
       message: "Registration unsuccessful",
       statusCode: 400,

@@ -22,7 +22,7 @@ export const getYourOrganisations = async (req: Request, res: Response) => {
         statusCode: 401,
       });
 
-    return res.status(200).json({
+    res.status(200).json({
       status: "success",
       message: "Successfully fetched your organisations",
       data: {
@@ -30,7 +30,7 @@ export const getYourOrganisations = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    return res.status(404).json({
+    res.status(404).json({
       status: "Bad request",
       message: "Error fetching your orgainsation",
       statusCode: 404,
@@ -55,13 +55,13 @@ export const getOrganisation = async (req: Request, res: Response) => {
       });
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       status: "success",
       message: "Successfully fetched the organisation",
       data: result.rows[0],
     });
   } catch (error) {
-    return res.status(404).json({
+    res.status(404).json({
       status: "Bad request",
       message: "Error fetching the orgainsation",
       statusCode: 404,
@@ -98,7 +98,7 @@ export const createOrg = async (req: Request, res: Response) => {
         statusCode: 400,
       });
 
-    return res.status(201).json({
+    res.status(201).json({
       status: "success",
       message: "Organisation created successfully",
       data: result.rows[0],
