@@ -1,6 +1,6 @@
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import request from "supertest";
-import app from "..";
+import app from "../server";
 import { signToken } from "../src/lib/utils";
 
 describe("Token Generation", () => {
