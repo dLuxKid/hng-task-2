@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { type NextFunction, type Request, type Response } from "express";
 import jwt from "jsonwebtoken";
 import client from "../../db";
-import { createSendToken } from "../lib/utils";
+import { createSendToken, signToken } from "../lib/utils";
 import { createUserQuery, loginQuery } from "./queries";
 
 declare global {
@@ -60,12 +60,26 @@ export const createUser = async (req: Request, res: Response) => {
     const result = await client.query(query);
     const { firstname, lastname, email, phone, userid } = result.rows[0];
 
-    createSendToken(
-      { userid, firstName: firstname, lastName: lastname, email, phone },
-      201,
-      res,
-      "signup"
-    );
+    const token = signToken(userid);
+
+    res.cookie("jwt", token, {
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    });
+
+    res.status(200).json({
+      status: "success",
+      message: "Registration successful",
+      data: {
+        accessToken: token,
+        user: {
+          firstname,
+          lastname,
+          email,
+          phone,
+          userid,
+        },
+      },
+    });
   } catch (error: any) {
     if (error.code == "23505") {
       const detail = error.detail;
@@ -127,12 +141,26 @@ export const loginUser = async (req: Request, res: Response) => {
 
     const { firstname, lastname, email, phone, userid } = result.rows[0];
 
-    createSendToken(
-      { userid, firstName: firstname, lastName: lastname, email, phone },
-      200,
-      res,
-      "login"
-    );
+    const token = signToken(userid);
+
+    res.cookie("jwt", token, {
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    });
+
+    res.status(200).json({
+      status: "success",
+      message: "Login successful",
+      data: {
+        accessToken: token,
+        user: {
+          firstname,
+          lastname,
+          email,
+          phone,
+          userid,
+        },
+      },
+    });
   } catch (err: any) {
     console.error("Error logging in", err);
 
