@@ -25,7 +25,7 @@ export const createSendToken = (
     expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   });
 
-  res.status(statusCode).json({
+  return res.status(statusCode).json({
     status: "success",
     message: type === "login" ? "Login successful" : "Registration successful",
     data: {
