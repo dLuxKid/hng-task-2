@@ -70,7 +70,7 @@ export const createUser = async (req: Request, res: Response) => {
     if (error.code == "23505") {
       const detail = error.detail;
       const field = detail.slice(detail.indexOf("(") + 1, detail.indexOf(")"));
-      return res.status(422).json({
+      res.status(422).json({
         errors: [
           {
             field,
@@ -78,13 +78,14 @@ export const createUser = async (req: Request, res: Response) => {
           },
         ],
       });
+    } else {
+      res.status(400).json({
+        status: "Bad Request",
+        message: "Registration unsuccessful",
+        statusCode: 400,
+        error,
+      });
     }
-    res.status(400).json({
-      status: "Bad Request",
-      message: "Registration unsuccessful",
-      statusCode: 400,
-      error,
-    });
   }
 };
 
@@ -135,7 +136,7 @@ export const loginUser = async (req: Request, res: Response) => {
   } catch (err: any) {
     console.error("Error logging in", err);
 
-    return res.status(400).json({
+    res.status(400).json({
       status: "Bad Request",
       message: "Authentication failed",
       statusCode: 401,
