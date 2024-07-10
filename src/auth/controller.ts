@@ -66,7 +66,7 @@ export const createUser = async (req: Request, res: Response) => {
       expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     });
 
-    res.status(200).json({
+    res.status(201).json({
       status: "success",
       message: "Registration successful",
       data: {
